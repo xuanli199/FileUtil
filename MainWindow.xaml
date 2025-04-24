@@ -1,0 +1,44 @@
+<Window x:Class="FileOccupyDetector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="文件占用检测工具" Height="450" Width="600" AllowDrop="True" Drop="Window_Drop">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="请选择文件或将文件拖放到此窗口:" Margin="0,0,0,5"/>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txtFilePath" IsReadOnly="True" Margin="0,0,5,0"/>
+            <Button Grid.Column="1" Content="浏览..." Click="BrowseButton_Click" Width="80"/>
+        </Grid>
+        
+        <DataGrid Grid.Row="2" x:Name="dgProcesses" Margin="0,10" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="进程ID" Binding="{Binding ProcessId}" Width="80"/>
+                <DataGridTextColumn Header="进程名称" Binding="{Binding ProcessName}" Width="150"/>
+                <DataGridTextColumn Header="窗口标题" Binding="{Binding MainWindowTitle}" Width="*"/>
+                <DataGridTemplateColumn Header="操作" Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="终止" Click="KillProcess_Click" Tag="{Binding ProcessId}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="检测" Click="DetectButton_Click" Width="80" Margin="0,0,10,0"/>
+            <Button Content="刷新" Click="RefreshButton_Click" Width="80"/>
+        </StackPanel>
+    </Grid>
+</Window>
